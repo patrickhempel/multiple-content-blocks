@@ -25,7 +25,9 @@ This will display the $name content block
 This will get $name content block's content, for you to process
 
 Possible options
-array(
-    'editor' => 'true' || 'false', // As String! Activates or deactivate the WYSIWYG-Editor for this multiple-content-block
-    'type' => 'input' || 'textarea' // Defining the type of the form-field if the editor is deactivated
-)  
+```php
+    $options = array(
+        'editor' => 'true' || 'false', 
+        'type' => 'input' || 'textarea'
+    )  
+```
