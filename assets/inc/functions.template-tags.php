@@ -8,8 +8,8 @@
  *
  * @param string $name The name of the block
  */
-function the_block($name) {
-	echo get_the_block($name);
+function the_block($name, $options = array( 'editor' => 'true')) {
+	echo get_the_block($name, $options);
 }
 
 /**
@@ -17,10 +17,10 @@ function the_block($name) {
  *
  * @param string $name The name of the block
  */
-function get_the_block($name) {
+function get_the_block($name, $options = array( 'editor' => 'true')) {
 	if(!empty($name)) :
 		global $post;
-		mcb_register_block($post->ID,$name);
+		mcb_register_block($post->ID,$name, $options);
 		
 		return apply_filters('the_content',get_post_meta($post->ID,'mcb-'.sanitize_title($name),true));
 	endif;
@@ -32,12 +32,12 @@ function get_the_block($name) {
  * @param int $post_id
  * @param string $name The name of the block
  */
-function mcb_register_block($post_id,$name) {
+function mcb_register_block($post_id,$name, $options = array( 'editor' => 'true')) {
 	if(!mcb_block_exists($post_id,$name)) {
 		$blocks = get_post_meta($post_id,'mcb-blocks',true);
 		if(!is_array($blocks)) $blocks = array();
 		
-		$blocks[sanitize_title($name)] = $name;
+		$blocks[sanitize_title($name)] = array( 'name' => $name, 'options' => $options);
 		
 		update_post_meta($post_id,'mcb-blocks',$blocks);
 	}

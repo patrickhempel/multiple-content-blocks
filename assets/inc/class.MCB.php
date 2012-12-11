@@ -48,9 +48,18 @@ class MCB {
 		endif;
 		
 		if($blocks) :
-			foreach($blocks as $id=>$name) :
-				echo '<p><strong>'.$name.'</strong></p>';
-				wp_editor(get_post_meta($post->ID,'mcb-'.$id,true),$id);
+			foreach($blocks as $id=>$block) :
+                if( !is_Array( $block)) :
+                    $block = array( 'name' => $block, 'options' => array( 'editor' => 'true'));
+                endif;
+				echo '<p><strong>'.$block['name'].'</strong></p>';
+                if( $block['options']['editor'] === 'true') :
+                    wp_editor(get_post_meta($post->ID,'mcb-'.$id,true),$id);
+                elseif( isset( $block['options']['type']) && ($block['options']['type'] === 'input')) :
+                    echo '<input type="text" name="' . $id . '" value="' . get_post_meta( $post->ID, 'mcb-'.$id, true). '" style="width: 100%";/>';
+                elseif( isset( $block['options']['type']) && ($block['options']['type'] === 'textarea')) :
+                    echo '<textarea name="' .$id. '" style="width: 100%">' . get_post_meta( $post->ID, 'mcb-'.$id, true) . '</textarea>';
+                endif;
 			endforeach;
 		endif;
 	}
